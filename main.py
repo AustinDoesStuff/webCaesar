@@ -20,8 +20,11 @@ from caesar import alphabet_position, rotate_character, encrypt
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         message = "Hello, world!"
-        newMessage = encrypt(message, 13)
-        self.response.write(newMessage)
+        encryptMessage = encrypt(message, 13)
+        textArea = "<textarea>" + encryptMessage + "</textarea>"
+        submit = "<input type=submit>"
+        form = "<form>" + textArea +"<br>"+ submit + "</form>"
+        self.response.write(form)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)

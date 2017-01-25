@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 import webapp2
+import cgi
 from caesar import alphabet_position, rotate_character, encrypt
 
 def BuildPage(textAreaContent):
@@ -38,7 +39,8 @@ class MainHandler(webapp2.RequestHandler):
         message = self.request.get("message")
         rot = int(self.request.get("rotation"))
         encryptMessage = encrypt(message, rot)
-        content = BuildPage(encryptMessage)
+        escapedMessage = cgi.escape(encryptMessage)
+        content = BuildPage(escapedMessage)
         self.response.write(content)
 
 

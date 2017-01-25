@@ -17,14 +17,30 @@
 import webapp2
 from caesar import alphabet_position, rotate_character, encrypt
 
+def BuildPage(textAreaContent):
+        rotInstr = "<label>Enter a rotational value: </label>"
+        rotationInput = "<input name='rotation' type='number'>"
+
+        textInstr = "<label>Enter your message: </label>"
+        textArea = "<textarea  name='message'>" + textAreaContent +"</textarea>"
+        submit = "<input type=submit>"
+        form = "<form action='/' method='post'>" + rotInstr + rotationInput + "<br>"*2 + textInstr + textArea +"<br>"+ submit + "</form>"
+        header = "<h2>Web Caesar</h2>"
+
+        return header + form
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        message = "Hello, world!"
-        encryptMessage = encrypt(message, 13)
-        textArea = "<textarea>" + encryptMessage + "</textarea>"
-        submit = "<input type=submit>"
-        form = "<form>" + textArea +"<br>"+ submit + "</form>"
-        self.response.write(form)
+        content = BuildPage("")
+        self.response.write(content)
+
+    def post(self):
+        message = self.request.get("message")
+        rot = int(self.request.get("rotation"))
+        encryptMessage = encrypt(message, rot)
+        content = BuildPage(encryptMessage)
+        self.response.write(content)
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
